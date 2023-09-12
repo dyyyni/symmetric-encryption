@@ -41,8 +41,7 @@ def main():
     key = get_random_bytes(32)
     plaintext = input("Enter the text to be encrypted: ").encode('utf-8')
 
-
-    print(base64.b64encode(key).decode('utf-8'))
+    print("Here is the key:", base64.b64encode(key).decode('utf-8'))
 
     ciphertext = encrypt(key, plaintext)
 
