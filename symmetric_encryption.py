@@ -1,6 +1,16 @@
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import base64
+import time
+
+def timer_decorator(func):
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        print(f"Elapsed time for {func.__name__}: {end_time - start_time} seconds.")
+        return result
+    return wrapper
 
 def pad(data):
     length = 16 - (len(data) % 16)
@@ -9,6 +19,7 @@ def pad(data):
 def unpad(data):
     return data[:-ord(data[-1:])]
 
+@timer_decorator
 def encrypt(key, plaintext):
     # Needs to be a multiple of 16 for ecb -->
     padded_plaintext = pad(plaintext)
@@ -17,6 +28,7 @@ def encrypt(key, plaintext):
 
     return ciphertext
 
+@timer_decorator
 def decrypt(key, ciphertext):
     cipher = AES.new(key, AES.MODE_ECB)
     decrypted_data = cipher.decrypt(ciphertext)
